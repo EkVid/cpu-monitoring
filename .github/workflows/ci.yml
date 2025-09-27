@@ -17,7 +17,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jsonnet
 
       - name: Dashboard Compile
-        run: jsonnet jsonnet/dashboard.jsonnet > generated/dashboard.json
+        run: mkdir -p generated && jsonnet jsonnet/dashboard.jsonnet > generated/dashboard.json
 
       - name: Start monitoring stack
         run: docker compose up -d
