@@ -52,6 +52,6 @@ jobs:
 
       - name: Push Dashboard to Grafana
         run: |
-        set -e
-        grafanactl resources push dashboards --path ./generated/dashboard.json
-        echo "Success!"
+          set -e
+          grafanactl resources push dashboards --path ./generated/dashboard.json
+          echo "Success!"
