@@ -38,6 +38,9 @@ jobs:
           done 
           echo "Grafana did not start in time" >&2 exit 1
 
+      - name: Show token length
+        run: echo "${{ secrets.GRAFANA_TOKEN }}"
+
       - name: Configure grafanactl
         run: |
           set -e
