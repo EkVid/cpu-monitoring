@@ -51,4 +51,7 @@ jobs:
           grafanactl config check
 
       - name: Push Dashboard to Grafana
-        run: grafanactl resources push dashboards --path ./generated/dashboard.json
+        run: |
+        set -e
+        grafanactl resources push dashboards --path ./generated/dashboard.json
+        echo "Success!"
