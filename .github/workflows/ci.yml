@@ -40,10 +40,10 @@ jobs:
 
       - name: Configure grafanactl
         run: |
-          ./.grafanactl/configure_grafana.sh
+          grafanactl config set contexts.default.grafana.server http://localhost:3000
+          grafanactl config set contexts.default.grafana.org-id 1
+          grafanactl config set contexts.default.grafana.token "${{ secrets.GRAFANA_TOKEN }}"
           grafanactl config check
-        env:
-          TOKEN: ${{ secrets.GRAFANA_TOKEN }}
 
       - name: Push Dashboard to Grafana
         run: grafanactl resources push dashboards --path ./generated/dashboard.json
