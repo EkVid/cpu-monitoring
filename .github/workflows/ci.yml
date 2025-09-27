@@ -26,6 +26,9 @@ jobs:
       - name: Start monitoring stack
         run: docker compose up -d
 
+      - name: Show running containers
+        run: docker ps
+
       - name: Wait for Grafana to be ready
         run: |
           for i in {1..30}; do 
@@ -43,11 +46,9 @@ jobs:
           set -e
           grafanactl config set contexts.default.grafana.server http://localhost:3000
           grafanactl config set contexts.default.grafana.org-id 1
-          grafanactl config set contexts.default.grafana.token "${{ secrets.GRAFANA_TOKEN }}"
+          grafanactl config set contexts.default.grafana.user admin
+          grafanactl config set contexts.default.grafana.password admin
           grafanactl config check
 
       - name: Push Dashboard to Grafana
         run: grafanactl resources push dashboards --path ./generated/dashboard.json
-
-      - name: Show running containers
-        run: docker ps
