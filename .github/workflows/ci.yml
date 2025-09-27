@@ -39,9 +39,11 @@ jobs:
           echo "Grafana did not start in time" >&2 exit 1
 
       - name: Configure grafanactl
-        run: ./.grafanactl/configure_grafana.sh
+        run: |
+          ./.grafanactl/configure_grafana.sh
+          grafanactl status
         env:
-          TOKEN: ${{secrets.GRAFANA_TOKEN}}
+          TOKEN: ${{ secrets.GRAFANA_TOKEN }}
 
       - name: Push Dashboard to Grafana
         run: grafanactl resources push dashboards --path ./generated/dashboard.json
