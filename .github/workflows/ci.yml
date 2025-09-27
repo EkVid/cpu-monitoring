@@ -1,0 +1,29 @@
+name: Monitoring Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Jsonnet
+        run: sudo apt-get update && sudo apt-get install -y jsonnet
+
+      - name: Validate Prometheus config
+        run: docker run --rm \
+          -v ${{ github.workspace }}/prometheus.yml:/etc/prometheus/prometheus.yml \
+          prom/prometheus \
+          --config.file=/etc/prometheus/prometheus.yml --test
+
+      - name: Start monitoring stack
+        run: docker-compose up -d
+
+      - name: Show running containers
+        run: docker ps
