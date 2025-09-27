@@ -18,9 +18,10 @@ jobs:
 
       - name: Install grafanactl
         run: |
-          curl -L -o grafanactl-x86_64.tar.gz "https://github.com/grafana/grafanactl/releases/download/12.2.0/grafanactl_Linux_x86_64.tar.gz"
+          curl -L -o grafanactl "https://github.com/grafana/grafanactl/releases/download/v0.31.0/grafanactl_Linux_x86_64"
           chmod +x grafanactl
           sudo mv grafanactl /usr/local/bin/grafanactl
+          grafanactl version
 
       - name: Start monitoring stack
         run: docker compose up -d
