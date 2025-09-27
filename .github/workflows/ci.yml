@@ -16,11 +16,33 @@ jobs:
       - name: Install Jsonnet
         run: sudo apt-get update && sudo apt-get install -y jsonnet
 
-      - name: Dashboard Compile
-        run: mkdir -p generated && jsonnet jsonnet/dashboard.jsonnet > generated/dashboard.json
+      - name: Install grafanactl
+        run: |
+          curl -sSL https://github.com/grafana/grafanactl/releases/download/v0.31.0/grafanactl_0.31.0_linux_amd64.tar.gz \
+          | sudo tar -xz -C /usr/local/bin grafanactl
 
       - name: Start monitoring stack
         run: docker compose up -d
+
+      - name: Wait for Grafana to be ready
+        run: |
+          for i in {1..30}; do 
+            if curl -s http://localhost:3000/api/health | grep '"database": "ok"'; then 
+               echo "Grafana is ready" 
+               exit 0 
+            fi 
+            echo "Waiting for Grafana..." 
+            sleep 5 
+          done 
+          echo "Grafana did not start in time" >&2 exit 1
+
+      - name: Configure grafanactl
+        run: ./.grafanactl/configure_grafana.sh
+        env:
+          TOKEN: ${{secrets.GRAFANA_TOKEN}}
+
+      - name: Push Dashboard to Grafana
+        run: grafanactl resources push dashboards --path ./generated/dashboard.json
 
       - name: Show running containers
         run: docker ps
