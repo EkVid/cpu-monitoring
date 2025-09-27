@@ -19,7 +19,6 @@ jobs:
       - name: Install grafanactl
         run: |
           curl -L -o grafanactl-x86_64.tar.gz "https://github.com/grafana/grafanactl/releases/download/12.2.0/grafanactl_Linux_x86_64.tar.gz"
-          tar -xzf grafanactl-x86_64.tar.gz
           chmod +x grafanactl
           sudo mv grafanactl /usr/local/bin/grafanactl
 
