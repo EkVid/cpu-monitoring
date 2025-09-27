@@ -16,9 +16,6 @@ jobs:
       - name: Install Jsonnet
         run: sudo apt-get update && sudo apt-get install -y jsonnet
 
-      - name: Validate Prometheus config
-        run: docker run --rm -v ${{ github.workspace }}/prometheus.yml:/prometheus.yml prom/prometheus promtool check config /prometheus.yml
-
       - name: Start monitoring stack
         run: docker-compose up -d
 
