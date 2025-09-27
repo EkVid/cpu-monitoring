@@ -5,7 +5,7 @@
      "name": "doom-dashboard",
      "namespace": "default",
      "labels": {
-       "grafana.app/deprecatedInternalID": "1"
+       "grafana.app/deprecatedInternalID": "10"
      },
      "annotations": {
        "grafana.app/createdBy": "user:bezallp1hzytcd",
