@@ -2,7 +2,7 @@
    "apiVersion": "dashboard.grafana.app/v2beta1",
    "kind": "Dashboard",
    "metadata": {
-     "name": "lalala-dashboard",
+     "name": "doom-dashboard",
      "namespace": "default",
      "labels": {
        "grafana.app/deprecatedInternalID": "1"
@@ -197,7 +197,7 @@
        "timezone": "browser",
        "to": "now"
      },
-     "title": "lalala dashboard",
+     "title": "doom dashboard",
      "variables": []
    } 
 }
