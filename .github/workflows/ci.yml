@@ -41,7 +41,7 @@ jobs:
       - name: Configure grafanactl
         run: |
           ./.grafanactl/configure_grafana.sh
-          grafanactl status
+          grafanactl config check
         env:
           TOKEN: ${{ secrets.GRAFANA_TOKEN }}
 
