@@ -38,13 +38,10 @@ jobs:
           done 
           echo "Grafana did not start in time" >&2 exit 1
 
-      - name: Show token length
-        run: echo "${{ secrets.GRAFANA_TOKEN }}"
-
       - name: Configure grafanactl
         run: |
           set -e
-          grafanactl config set contexts.default.grafana.server http://localhost:3000
+          grafanactl config set contexts.default.grafana.server http://grafana:3000
           grafanactl config set contexts.default.grafana.org-id 1
           grafanactl config set contexts.default.grafana.token ${{ secrets.GRAFANA_TOKEN }}
           grafanactl config check
