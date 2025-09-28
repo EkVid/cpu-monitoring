@@ -56,6 +56,9 @@ jobs:
         run: terraform validate
         working-directory: ./terraform
 
+      - name: Debug
+        run: echo "$TF_VAR_grafana_url"
+
       - name: Terraform Plan
         run: terraform plan -out=tfplan
         working-directory: ./terraform
