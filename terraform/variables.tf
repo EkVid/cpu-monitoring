@@ -1,7 +1,6 @@
 variable "grafana_url" {
   type        = string
   description = "Grafana server URL"
-  default     = "http://localhost:3000"
 }
 
 variable "grafana_token" {

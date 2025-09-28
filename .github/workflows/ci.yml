@@ -9,6 +9,7 @@ jobs:
   build-and-run:
     runs-on: ubuntu-latest
     env:
+      TF_VAR_grafana_url: "http://localhost:3000"
       TF_VAR_grafana_token: ${{ secrets.GRAFANA_TOKEN }}
 
     steps:
@@ -54,15 +55,6 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
         working-directory: ./terraform
-
-      - name: Debug Terraform vars
-        run: |
-          if [ -n "$TF_VAR_grafana_token" ]; then
-            echo "grafana_token is set (length: ${#TF_VAR_grafana_token})"
-            echo "$TF_VAR_grafana_token"
-          else
-            echo "grafana_token is NOT set!"
-          fi
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
