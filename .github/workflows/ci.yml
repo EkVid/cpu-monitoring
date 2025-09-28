@@ -8,20 +8,26 @@ on:
 jobs:
   build-and-run:
     runs-on: ubuntu-latest
+    env:
+      GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Install Jsonnet
-        run: sudo apt-get update && sudo apt-get install -y jsonnet
+      # - name: Install Jsonnet
+      #   run: sudo apt-get update && sudo apt-get install -y jsonnet
 
-      - name: Install grafanactl
-        run: |
-          curl -L -o grafanactl-x86_64.tar.gz "https://github.com/grafana/grafanactl/releases/download/v0.0.5/grafanactl_Linux_x86_64.tar.gz"
-          tar -xzf grafanactl-x86_64.tar.gz
-          chmod +x grafanactl
-          sudo mv grafanactl /usr/local/bin/grafanactl
+      # - name: Install grafanactl
+      #   run: |
+      #     curl -L -o grafanactl-x86_64.tar.gz "https://github.com/grafana/grafanactl/releases/download/v0.0.5/grafanactl_Linux_x86_64.tar.gz"
+      #     tar -xzf grafanactl-x86_64.tar.gz
+      #     chmod +x grafanactl
+      #     sudo mv grafanactl /usr/local/bin/grafanactl
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.3
 
       - name: Start monitoring stack
         run: docker compose up -d
@@ -41,17 +47,33 @@ jobs:
           done 
           echo "Grafana did not start in time" >&2 exit 1
 
-      - name: Configure grafanactl
-        run: |
-          set -e
-          grafanactl config set contexts.default.grafana.server http://localhost:3000
-          grafanactl config set contexts.default.grafana.org-id 1
-          grafanactl config set contexts.default.grafana.user admin
-          grafanactl config set contexts.default.grafana.password admin
-          grafanactl config check
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
 
-      - name: Push Dashboard to Grafana
-        run: |
-          set -e
-          grafanactl resources push dashboards --path ./generated/dashboard.json
-          echo "Success!"
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./terraform
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./terraform
+
+      # - name: Configure grafanactl
+      #   run: |
+      #     set -e
+      #     grafanactl config set contexts.default.grafana.server http://localhost:3000
+      #     grafanactl config set contexts.default.grafana.org-id 1
+      #     grafanactl config set contexts.default.grafana.user admin
+      #     grafanactl config set contexts.default.grafana.password admin
+      #     grafanactl config check
+
+      # - name: Push Dashboard to Grafana
+      #   run: |
+      #     set -e
+      #     grafanactl resources push dashboards --path ./generated/dashboard.json
+      #     echo "Success!"
