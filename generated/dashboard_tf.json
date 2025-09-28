@@ -1,0 +1,20 @@
+{
+  "uid": "doom-27T01",
+  "title": "doom 2dashboard",
+  "panels": [
+    {
+      "id": 1,
+      "title": "New panel",
+      "type": "graph",
+      "datasource": "cezalohfm35dsc",
+      "targets": [
+        {
+          "expr": "prometheus_tsdb_wal_completed_pages_total",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 30,
+  "version": 1
+}
