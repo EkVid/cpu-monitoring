@@ -55,6 +55,15 @@ jobs:
         run: terraform validate
         working-directory: ./terraform
 
+      - name: Debug Terraform vars
+        run: |
+          if [ -n "$TF_VAR_grafana_token" ]; then
+            echo "grafana_token is set (length: ${#TF_VAR_grafana_token})"
+            echo "$TF_VAR_grafana_token"
+          else
+            echo "grafana_token is NOT set!"
+          fi
+
       - name: Terraform Plan
         run: terraform plan -out=tfplan
         working-directory: ./terraform
