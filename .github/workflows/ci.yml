@@ -9,7 +9,7 @@ jobs:
   build-and-run:
     runs-on: ubuntu-latest
     env:
-      GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
+      TF_VAR_grafana_token: ${{ secrets.GRAFANA_TOKEN }}
 
     steps:
       - name: Checkout repo
